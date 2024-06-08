@@ -5,7 +5,7 @@
 </h1>
 
 <div align="center">
-  You can see the [study report](Teamreport_CENG3544.pdf)
+  You can see the study report named "Teamreport_CENG3544.pdf".
 </div>
 
 ---
