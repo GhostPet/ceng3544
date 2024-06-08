@@ -1,0 +1,20 @@
+{% extends "partials/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% for message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ message[0] }} alert-dismissible fade show" role="alert">
+        {{ message[1] }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+    <h1>Welcome to CENG3544 Project</h1>
+    <p class="lead">This is your homepage!</p>
+
+</div>
+{% endblock %}

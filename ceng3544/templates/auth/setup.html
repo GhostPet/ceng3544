@@ -1,0 +1,70 @@
+{% extends 'partials/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+{% for message in get_flashed_messages(with_categories=true) %}
+<div class="alert alert-{{ message[0] }} alert-dismissible fade show" role="alert">
+	{{ message[1] }}
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+
+	<div class="row justify-content-center">
+		<div class="card col-12 col-md-10 col-lg-8">
+			<div class="card-body">
+				<h1 class="card-title text-center">Set Up an Admin User</h1>
+				<form action="{{ url_for('auth.setup') }}" method="POST">
+					<div class="card-body form-group">
+						{{ form.hidden_tag() }}
+
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="name-label">Full Name</span>
+							{{ form.name(class="form-control", placeholder="John Johnson", aria_label="Name",
+							aria_describedby="name-label") }}
+						</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="username-label">@</span>
+							{{ form.username(class="form-control", placeholder="Username", aria_label="Username",
+							aria_describedby="username-label") }}
+						</div>
+
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="email-label">Email</span>
+							{{ form.email(class="form-control", placeholder="john@example.com", aria_label="Email",
+							aria_describedby="email-label") }}
+						</div>
+
+						<div class="mb-2">
+							{{ form.password.label(class="form-label") }}
+							<div class="input-group">
+								{{ form.password(class="form-control", placeholder="Password", aria_label="Password",
+								aria_describedby="password") }}
+							</div>
+						</div>
+
+						<div class="mb-3">
+							<div class="input-group">
+								{{ form.confirm_password(class="form-control", placeholder="Confirm Password",
+								aria_label="Password",
+								aria_describedby="confirm_password") }}
+							</div>
+							<div class="form-text" id="pass-label">Password must be 8-20 characters, including lowercase
+								and uppercase letters, numbers and symbols.</div>
+						</div>
+
+						<div class="input-group mb-3 d-grid gap-2">
+							{{ form.submit(class="btn btn-secondary") }}
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

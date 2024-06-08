@@ -1,0 +1,73 @@
+{% extends "partials/base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+
+    {% for message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ message[0] }} alert-dismissible fade show" role="alert">
+        {{ message[1] }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <main class="form-signin w-100 m-auto">
+                <h5>Instructions!</h5>
+                <ul>
+                    <li>Download <a
+                            href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=US"
+                            target="_blank">Google Authenticator</a> on your mobile.</li>
+                    <li>Set up a new authenticator.</li>
+                    <li>Once you have scanned the QR, please enter your OTP (One Time Password) at the end of the page.
+                    </li>
+                </ul>
+                <div class="text-center">
+                    <img src="data:image/png;base64, {{ qr_image }}" alt="Secret Token"
+                        style="width:200px;height:200px" />
+                </div>
+                <div class="form-group">
+                    <label for="secret" class="form-label">Secret Token</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="secret" value="{{ secret }}" readonly>
+                        <button type="button" class="btn btn-outline-primary" onclick="copySecret()">
+                            Copy Secret
+                        </button>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+
+                </div>
+
+                <div class="my-3">
+                    <form action="{{ url_for('auth.profile_2fa') }}" method="POST">
+                        <div class="input-group mt-3">
+                            <input type="text" class="form-control" id="otp" name="otp" placeholder="Enter OTP">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% block js %}
+    <script>
+        function copySecret() {
+            var copyText = document.getElementById("secret");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+            document.execCommand("copy");
+            alert("Successfully copied TOTP secret token!");
+        }
+    </script>
+
+</div>
+{% endblock %}

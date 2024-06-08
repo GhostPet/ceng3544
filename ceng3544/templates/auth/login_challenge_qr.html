@@ -1,0 +1,67 @@
+{% extends "partials/base.html" %}
+
+{% block title %}Login Challenge{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% for message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ message[0] }} alert-dismissible fade show" role="alert">
+        {{ message[1] }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+    <h1>Login Challenge Debug Page</h1>
+    <p class="lead">User ID: {{ user_id }}</p>
+    <p class="lead">The QR code will expire in 5 minutes.</p>
+    <div class="text-center">
+        <img src="data:image/png;base64, {{ qr_image }}" alt="Secret Token" style="width:200px;height:200px" />
+    </div>
+    <div class="form-group">
+        <label for="secret" class="form-label">Secret Token</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="secret" value="{{ secret }}" readonly>
+            <button type="button" class="btn btn-outline-primary" onclick="copySecret()">
+                Copy Secret
+            </button>
+        </div>
+
+        <div class="text-center mt-2">
+            <button type="button" class="btn btn-outline-primary" onclick="check()">
+                Check if logged in
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function copySecret() {
+            var copyText = document.getElementById("secret");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999)
+            document.execCommand("copy");
+        }
+
+        function check() {
+            fetch("{{ url_for('auth.login_challenge_qr', user_id=user_id, code=secret) }}", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // Redirect to the profile page
+                    window.location.href = "{{ url_for('index') }}";
+                }
+                throw new Error("Network response was not ok.");
+            }).then(data => {
+                alert(data.message);
+            }).catch(error => {
+                console.error("There has been a problem with your fetch operation:", error);
+            });
+        }
+    </script>
+
+</div>
+{% endblock %}

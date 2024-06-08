@@ -1,0 +1,39 @@
+{% extends "partials/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% for message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ message[0] }} alert-dismissible fade show" role="alert">
+        {{ message[1] }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+    <div class="row justify-content-center">
+        <div class="card col-12 col-md-10 col-lg-8">
+            <div class="card-body">
+
+                <h1 class="card-title text-center">Are You Sure?</h1>
+                <p class="lead">This proccess can not be undone. Please enter your password to confirm.</p>
+                <form action="{{ url_for('auth.profile_delete') }}" method="POST">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="password-label">Password</span>
+                        <input type="password" name="password" class="form-control" placeholder="Password"
+                            aria-label="Password" aria-describedby="password-label">
+                    </div>
+                    <div class="btn-group input-group mb-3">
+                        <a href="{{ url_for('auth.profile') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+    {% endblock %}

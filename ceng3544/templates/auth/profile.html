@@ -1,0 +1,39 @@
+{% extends "partials/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% for message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ message[0] }} alert-dismissible fade show" role="alert">
+        {{ message[1] }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+    <h1>Hello {{ current_user.name }}</h1>
+    <p class="lead">Your Information:</p>
+    <ul class="list-group mb-3">
+        <li class="list-group-item"><b>Id:</b> {{ current_user.id }}</li>
+        <li class="list-group-item"><b>Username:</b> {{ current_user.username }}</li>
+        <li class="list-group-item"><b>Email:</b> {{ current_user.email }}</li>
+        <li class="list-group-item"><b>Role:</b> {{ current_user.role|title }}</li>
+        <li class="list-group-item"><b>Created At:</b> {{ current_user.created_at }}</li>
+        <li class="list-group-item"><b>Updated At:</b> {{ current_user.updated_at }}</li>
+    </ul>
+
+    <div class="btn-group">
+        <a href="{{ url_for('auth.profile_2fa') }}" class="btn btn-secondary">2 Factor Authentication</a>
+        <a href="{{ url_for('auth.profile_qr') }}" class="btn btn-secondary">QR Code Scan</a>
+    </div>
+
+    <div class="btn-group">
+        <a href="{{ url_for('auth.profile_edit') }}" class="btn btn-secondary">Edit Profile</a>
+        <a href="{{ url_for('auth.profile_change_password') }}" class="btn btn-secondary">Change Password</a>
+        <a href="{{ url_for('auth.profile_delete') }}" class="btn btn-danger">Delete Profile</a>
+    </div>
+
+</div>
+{% endblock %}
